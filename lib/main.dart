@@ -4,23 +4,14 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fruit Catcher Game',
-      home: const GameScreen(),
-    );
-  }
-}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-class GameScreen extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Game akan ditampilkan di sini'),
-      ),
+    return const MaterialApp(
+      title: 'Fruit Catcher Game',
+      home: GameScreen(),
     );
   }
 }
@@ -33,11 +24,8 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  int score = 1;
 
-  @override
-  void initState() {
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,9 +40,9 @@ class _GameScreenState extends State<GameScreen> {
                 color: Colors.black54,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Text(
-                'Score: 1',
-                style:TextStyle(
+              child: Text(
+                'Score: $score',
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -62,52 +50,24 @@ class _GameScreenState extends State<GameScreen> {
               ),
             ),
           ),
+          Positioned(
+            top: 50,
+            right: 20,
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.music_note, color: Colors.black),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  icon: const Icon(Icons.volume_up, color: Colors.black),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
-class GameScreen extends StatefulWidget {
-const GameScreen({super.key});
-}
-@override
-State<GameScreen> createState() => _GameScreenState();
-class _GameScreenState extends State<GameScreen> {
-@override
-void initState() {
-super.initState();
-}
-@override
-Widget build(BuildContext context) {
-return Scaffold(
-body: Stack(
-children: [
-Positioned(
-        ....
-....
-), // Positioned
-// Penambahan code disini disini 
-// untuk gambar Icon 
-Positioned(
-top: 50,
-right: 20,
-child: Row(
-children: [
-IconButton(
-icon: const Icon(Icons.music_note, color: Colors.black),
-onPressed: () {},
-),
-IconButton(
-icon: const Icon(Icons.volume_up, color: Colors.black),
-onPressed: () {},
-),
-],
-), // Row 
-), // Positioned 
-], // Children 
-), // Stack
-);
-}
-}
-
