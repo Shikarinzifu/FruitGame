@@ -67,3 +67,47 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 }
+
+class GameScreen extends StatefulWidget {
+const GameScreen({super.key});
+}
+@override
+State<GameScreen> createState() => _GameScreenState();
+class _GameScreenState extends State<GameScreen> {
+@override
+void initState() {
+super.initState();
+}
+@override
+Widget build(BuildContext context) {
+return Scaffold(
+body: Stack(
+children: [
+Positioned(
+        ....
+....
+), // Positioned
+// Penambahan code disini disini 
+// untuk gambar Icon 
+Positioned(
+top: 50,
+right: 20,
+child: Row(
+children: [
+IconButton(
+icon: const Icon(Icons.music_note, color: Colors.black),
+onPressed: () {},
+),
+IconButton(
+icon: const Icon(Icons.volume_up, color: Colors.black),
+onPressed: () {},
+),
+],
+), // Row 
+), // Positioned 
+], // Children 
+), // Stack
+);
+}
+}
+
