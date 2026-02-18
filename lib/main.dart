@@ -117,4 +117,11 @@ class _GameScreenState extends State<GameScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    game.onRemove();
+    game.scoreNotifier.dispose();
+    super.dispose();
+  }
 }
