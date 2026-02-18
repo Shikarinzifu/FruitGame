@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flame/game.dart';
+import 'game/fruit_catcher_game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +14,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Fruit Catcher Game',
       home: GameScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -25,81 +28,64 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
 
-  final ValueNotifier<int> counter = ValueNotifier(0);
+  late FruitCatcherGame game;
 
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    counter.dispose();
-    super.dispose();
+    game = FruitCatcherGame();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
 
-          // Area Game (Stack)
-          Expanded(
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 50,
-                  left: 20,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.black54,
-                      borderRadius: BorderRadius.circular(10),
+          // Layer 1: Area Game (Full Screen)
+          GameWidget(game: game),
+
+          // Layer 2: Score kiri atas
+          Positioned(
+            top: 50,
+            left: 20,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.black54,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: ValueListenableBuilder<int>(
+                valueListenable: game.scoreNotifier,
+                builder: (context, score, child) {
+                  return Text(
+                    'Score: $score',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
-                    child: ValueListenableBuilder<int>(
-                      valueListenable: counter,
-                      builder: (context, score, child) {
-                        return Text(
-                          'Score: $score',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 50,
-                  right: 20,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.music_note, color: Colors.black),
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.volume_up, color: Colors.black),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
           ),
 
-          // Tombol Tambah Score
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: ElevatedButton(
-              onPressed: () {
-                counter.value++;
-              },
-              child: const Text("Tambah Score"),
+          // Layer 3: Tombol musik & SFX kanan atas
+          Positioned(
+            top: 50,
+            right: 20,
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.music_note, color: Colors.black),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  icon: const Icon(Icons.volume_up, color: Colors.black),
+                  onPressed: () {},
+                ),
+              ],
             ),
           ),
         ],
