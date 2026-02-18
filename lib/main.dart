@@ -24,7 +24,13 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  final ValueNotifier<int> counter = ValueNotifier(1);
+
+  final ValueNotifier<int> counter = ValueNotifier(0);
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -37,6 +43,8 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       body: Column(
         children: [
+
+          // Area Game (Stack)
           Expanded(
             child: Stack(
               children: [
@@ -70,13 +78,11 @@ class _GameScreenState extends State<GameScreen> {
                   child: Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.music_note,
-                            color: Colors.black),
+                        icon: const Icon(Icons.music_note, color: Colors.black),
                         onPressed: () {},
                       ),
                       IconButton(
-                        icon: const Icon(Icons.volume_up,
-                            color: Colors.black),
+                        icon: const Icon(Icons.volume_up, color: Colors.black),
                         onPressed: () {},
                       ),
                     ],
@@ -86,7 +92,7 @@ class _GameScreenState extends State<GameScreen> {
             ),
           ),
 
-          // Tombol di bawah
+          // Tombol Tambah Score
           Padding(
             padding: const EdgeInsets.all(16),
             child: ElevatedButton(
