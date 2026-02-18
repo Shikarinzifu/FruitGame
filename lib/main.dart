@@ -24,7 +24,14 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  int score = 1;
+
+  final ValueNotifier<int> counter = ValueNotifier(1);
+
+  @override
+  void dispose() {
+    counter.dispose(); // penting biar gak memory leak
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +47,18 @@ class _GameScreenState extends State<GameScreen> {
                 color: Colors.black54,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Text(
-                'Score: $score',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+              child: ValueListenableBuilder<int>(
+                valueListenable: counter,
+                builder: (context, score, child) {
+                  return Text(
+                    'Score: $score',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -57,7 +69,9 @@ class _GameScreenState extends State<GameScreen> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.music_note, color: Colors.black),
-                  onPressed: () {},
+                  onPressed: () {
+                    counter.value++; // contoh tambah skor
+                  },
                 ),
                 IconButton(
                   icon: const Icon(Icons.volume_up, color: Colors.black),
