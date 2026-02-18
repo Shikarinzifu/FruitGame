@@ -24,60 +24,76 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-
   final ValueNotifier<int> counter = ValueNotifier(1);
 
   @override
   void dispose() {
-    counter.dispose(); // penting biar gak memory leak
+    counter.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          Positioned(
-            top: 50,
-            left: 20,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.black54,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ValueListenableBuilder<int>(
-                valueListenable: counter,
-                builder: (context, score, child) {
-                  return Text(
-                    'Score: $score',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          Positioned(
-            top: 50,
-            right: 20,
-            child: Row(
+          Expanded(
+            child: Stack(
               children: [
-                IconButton(
-                  icon: const Icon(Icons.music_note, color: Colors.black),
-                  onPressed: () {
-                    counter.value++; // contoh tambah skor
-                  },
+                Positioned(
+                  top: 50,
+                  left: 20,
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ValueListenableBuilder<int>(
+                      valueListenable: counter,
+                      builder: (context, score, child) {
+                        return Text(
+                          'Score: $score',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.volume_up, color: Colors.black),
-                  onPressed: () {},
+                Positioned(
+                  top: 50,
+                  right: 20,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.music_note,
+                            color: Colors.black),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.volume_up,
+                            color: Colors.black),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
                 ),
               ],
+            ),
+          ),
+
+          // Tombol di bawah
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: ElevatedButton(
+              onPressed: () {
+                counter.value++;
+              },
+              child: const Text("Tambah Score"),
             ),
           ),
         ],
