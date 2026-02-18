@@ -7,7 +7,8 @@ import 'basket.dart';
 
 enum FruitType { apple, banana, orange, strawberry }
 
-class Fruit extends PositionComponent with HasGameRef<FruitCatcherGame>, CollisionCallbacks {
+class Fruit extends PositionComponent 
+    with HasGameRef<FruitCatcherGame>, CollisionCallbacks {
   final FruitType type;
   final double fallSpeed = 200;
   final Random random = Random();
@@ -19,19 +20,28 @@ class Fruit extends PositionComponent with HasGameRef<FruitCatcherGame>, Collisi
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    
     anchor = Anchor.center;
-    add(CircleHitbox());
+    
+    // PENTING: Tambahkan CircleHitbox
+    final hitbox = CircleHitbox(
+      radius: size.x / 2,
+      position: Vector2.zero(),
+      anchor: Anchor.center,
+    );
+    add(hitbox);
+    
+    
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-
-    // Move fruit down
+    
     position.y += fallSpeed * dt;
 
-    // Remove if off screen
     if (position.y > gameRef.size.y + 50) {
+  
       removeFromParent();
     }
   }
@@ -39,8 +49,11 @@ class Fruit extends PositionComponent with HasGameRef<FruitCatcherGame>, Collisi
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-
+    
+    
+    
     if (other is Basket) {
+
       gameRef.incrementScore();
       removeFromParent();
     }
@@ -49,9 +62,9 @@ class Fruit extends PositionComponent with HasGameRef<FruitCatcherGame>, Collisi
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-
-    // Fruit color based on type
+    
     final paint = Paint()..style = PaintingStyle.fill;
+
     switch (type) {
       case FruitType.apple:
         paint.color = Colors.red;
@@ -67,13 +80,28 @@ class Fruit extends PositionComponent with HasGameRef<FruitCatcherGame>, Collisi
         break;
     }
 
-    // Draw fruit
-    canvas.drawCircle(Offset(size.x / 2, size.y / 2), size.x / 2, paint);
+    canvas.drawCircle(
+      Offset.zero,  // 👈 CENTERED karena anchor = center
+      size.x / 2,
+      paint,
+    );
 
-    // Add shine effect
+    // Shine effect
     final shinePaint = Paint()
       ..color = Colors.white.withOpacity(0.3)
       ..style = PaintingStyle.fill;
-    canvas.drawCircle(Offset(size.x / 2 - 5, size.y / 2 - 5), size.x / 5, shinePaint);
+
+    canvas.drawCircle(
+      const Offset(-5, -5),
+      size.x / 5,
+      shinePaint,
+    );
+    
+    // DEBUG: Draw hitbox outline (hapus nanti)
+    final debugPaint = Paint()
+      ..color = Colors.green.withOpacity(0.3)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+    canvas.drawCircle(Offset.zero, size.x / 2, debugPaint);
   }
 }

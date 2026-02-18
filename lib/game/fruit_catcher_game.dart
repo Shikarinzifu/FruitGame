@@ -1,9 +1,9 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'managers/audio_manager.dart';
+import 'package:flame/collisions.dart';
 
-
-class FruitCatcherGame extends FlameGame {
+class FruitCatcherGame extends FlameGame with HasCollisionDetection {
 
   // Background color
   @override
@@ -18,5 +18,10 @@ class FruitCatcherGame extends FlameGame {
 
     // Play background music saat game mulai
     AudioManager().playBackgroundMusic();
+  }
+
+  // Method untuk increment score saat fruit kena basket
+  void incrementScore() {
+    scoreNotifier.value++;
   }
 }
